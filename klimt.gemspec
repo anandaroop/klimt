@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Anandaroop Roy"]
   spec.email         = ["anandaroop.roy+github@gmail.com"]
 
-  spec.summary       = %q{Command line tool for Artsy API}
+  spec.summary       = %q{CLI for the Artsy API}
   # spec.description   = %q{TODO: Write a longer description or delete this line.}
-  # spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/anandaroop/klimt"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -30,13 +30,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.13"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "byebug"
+  spec.add_development_dependency 'bundler', '~> 1.13'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'byebug', '~> 9.0'
 
-  spec.add_runtime_dependency 'thor'
-  spec.add_runtime_dependency 'netrc'
-  spec.add_runtime_dependency 'highline'
-  spec.add_runtime_dependency 'typhoeus'
+  spec.add_runtime_dependency 'thor', '~> 0.19'
+  spec.add_runtime_dependency 'netrc', '~> 0.11'
+  spec.add_runtime_dependency 'highline', '~> 1.7'
+  spec.add_runtime_dependency 'typhoeus', '~> 1.1'
 end
