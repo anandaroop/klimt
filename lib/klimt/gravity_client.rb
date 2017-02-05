@@ -1,4 +1,4 @@
-require 'byebug'
+# require 'byebug'
 require 'netrc'
 require 'highline'
 require 'typhoeus'
@@ -32,6 +32,18 @@ module Klimt
       params[:total_count] = true
       response = Typhoeus.get("https://#{@host}/api/v1/#{type}?#{URI.encode_www_form(params)}", headers: headers)
       response.headers['X-Total-Count']
+    end
+
+    def search(term, params, options)
+      params = Hash[ params.map{|pair| pair.split('=')} ]
+      params[:term] = term
+      search_uri = "https://#{@host}/api/v1/match?#{URI.encode_www_form(params)}"
+      if options[:indexes]
+      # this is weird cuz same key can exist multiple times
+        search_uri << "&" << options[:indexes].map{|index| "indexes[]=#{index}"}.join('&')
+      end
+      response = Typhoeus.get(search_uri, headers: headers)
+      response.body
     end
 
     private

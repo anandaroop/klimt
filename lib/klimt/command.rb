@@ -25,6 +25,14 @@ module Klimt
       puts count
     end
 
+    desc "search TERM", "Search results for the given TERM, optionally filted by PARAMS"
+    method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...'
+    def search(term, *params)
+      client = Klimt::GravityClient.new(env: options[:env])
+      response = client.search(term, params, options)
+      render response
+    end
+
     private
 
     def render(obj)
