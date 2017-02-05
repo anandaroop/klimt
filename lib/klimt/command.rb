@@ -8,14 +8,14 @@ module Klimt
     def find(type, id)
       client = Klimt::GravityClient.new(env: options[:env])
       response = client.find(type, id)
-      puts JSON.pretty_generate JSON.parse(response)
+      render response
     end
 
     desc "list TYPE [PARAMS]", "A list of the given TYPE, optionally filted by PARAMS"
     def list(type, *params)
       client = Klimt::GravityClient.new(env: options[:env])
       response = client.list(type, params)
-      puts JSON.pretty_generate JSON.parse(response)
+      render response
     end
 
     desc "count TYPE [PARAMS]", "A count of the given TYPE, optionally filted by PARAMS"
@@ -24,5 +24,12 @@ module Klimt
       count = client.count(type, params)
       puts count
     end
+
+    private
+
+    def render(obj)
+      puts JSON.pretty_generate JSON.parse(obj)
+    end
+
   end
 end
