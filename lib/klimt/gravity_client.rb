@@ -1,12 +1,14 @@
-# require 'byebug'
+require 'byebug'
 require 'netrc'
 require 'highline'
 require 'typhoeus'
 require 'json'
+require 'uri'
 
 module Klimt
   class GravityClient
     HOSTS = { production: 'api.artsy.net', staging: 'stagingapi.artsy.net' }
+    DEFAULT_PAGE_SIZE = 20
 
     def initialize(env:)
       @host = set_host(env)
@@ -16,6 +18,20 @@ module Klimt
     def find(type, id)
       response = Typhoeus.get("https://#{@host}/api/v1/#{type}/#{id}", headers: headers)
       response.body
+    end
+
+    def list(type, params)
+      params = Hash[ params.map{|pair| pair.split('=')} ]
+      response = Typhoeus.get("https://#{@host}/api/v1/#{type}?#{URI.encode_www_form(params)}", headers: headers)
+      response.body
+    end
+
+    def count(type, params)
+      params = Hash[ params.map{|pair| pair.split('=')} ]
+      params[:size] = 0
+      params[:total_count] = true
+      response = Typhoeus.get("https://#{@host}/api/v1/#{type}?#{URI.encode_www_form(params)}", headers: headers)
+      response.headers['X-Total-Count']
     end
 
     private
@@ -62,7 +78,7 @@ module Klimt
       cli = HighLine.new
       cli.say "No login credentials found in .netrc"
       cli.say "Please login now"
-      cli.say ""
+      cli.say "-----"
       email = cli.ask("Artsy email    : ") { }
       pass  = cli.ask("Artsy password : ") { |q| q.echo = "x" }
       [email, pass]
