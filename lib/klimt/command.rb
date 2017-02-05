@@ -8,7 +8,7 @@ module Klimt
     def find(type, id)
       client = Klimt::GravityClient.new(env: options[:env])
       response = client.find(type, id)
-      puts response
+      puts JSON.pretty_generate JSON.parse(response)
     end
   end
 end

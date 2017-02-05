@@ -14,7 +14,7 @@ module Klimt
     end
 
     def find(type, id)
-      response = Typhoeus.get "https://#{@host}/api/v1/#{type}/#{id}", headers: headers
+      response = Typhoeus.get("https://#{@host}/api/v1/#{type}/#{id}", headers: headers)
       response.body
     end
 
