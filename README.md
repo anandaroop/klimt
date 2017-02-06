@@ -13,16 +13,23 @@ $ klimt find partner gagosian-gallery
 $ klimt find artist damien-hirst
 ```
 
-#### List a collection of resources
+### List a collection of resources
 
 ```sh
 $ klimt list partners
-$ klimt list partners eligible_for_listing=true near=41,-74
+$ klimt list partners eligible_for_listing=true near=30,-90
+```
+
+### Find a resource via term search
+
+```sh
+$ klimt search "Gagosian"
+$ klimt search "Eyebeam" --indexes=Article
 ```
 
 ## Installation
 
-For now it's not distributed using RubyGems, so you'll fetch and build it yourself which is as simple as: 
+Since it's not distributed via RubyGems, you'll fetch and build it yourself which is as simple as: 
 
 ```sh
 $ git clone https://github.com/anandaroop/klimt.git
@@ -37,4 +44,14 @@ Klimt uses a Gravity `ClientApplication`, whose id and secret you'll have to sup
 $ KLIMT_ID=<replace> KLIMT_SECRET=<replace> klimt help
 ```
 
-Or add them to your shell startup scripts.
+Or just add these env variables to your shell startup script.
+
+## Klimt :sparkling_heart: JQ
+
+JQ is a command line JSON pretty-printing and transformation tool that works great with Klimt
+
+```sh
+$ klimt list partners | jq '.[] | { id, name }'
+$ klimt find partner 'dickinson' | jq '.name'
+
+```
