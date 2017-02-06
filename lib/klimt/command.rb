@@ -1,7 +1,11 @@
 require 'thor'
+require 'klimt/commands/partner'
+require 'klimt/rendering'
 
 module Klimt
   class Command < Thor
+    include Rendering
+
     class_option :env, desc: 'Choose environment', default: 'production', aliases: ['-e'], enum: ['production', 'staging']
 
     desc "find TYPE ID", "An instance of the given TYPE, identified by ID"
@@ -28,16 +32,16 @@ module Klimt
     desc "search TERM", "Search results for the given TERM, optionally filted by PARAMS"
     method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...'
     def search(term, *params)
+      indexes = options[:indexes] unless options[:indexes].nil?
       client = Klimt::GravityClient.new(env: options[:env])
-      response = client.search(term, params, options)
+      response = client.search(term, params, indexes)
       render response
     end
 
-    private
+    # partner subcommands
 
-    def render(obj)
-      puts JSON.pretty_generate JSON.parse(obj)
-    end
+    desc 'partner', 'View subcommands that pertain to partners'
+    subcommand "partner", Klimt::Commands::Partner
 
   end
 end

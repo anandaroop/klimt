@@ -7,6 +7,8 @@ require 'uri'
 
 module Klimt
   class GravityClient
+    attr_reader :token
+
     HOSTS = { production: 'api.artsy.net', staging: 'stagingapi.artsy.net' }
     DEFAULT_PAGE_SIZE = 20
 
@@ -16,13 +18,15 @@ module Klimt
     end
 
     def find(type, id)
-      response = Typhoeus.get("https://#{@host}/api/v1/#{type}/#{id}", headers: headers)
+      uri = "https://#{@host}/api/v1/#{type}/#{id}"
+      response = Typhoeus.get(uri, headers: headers)
       response.body
     end
 
     def list(type, params)
       params = Hash[ params.map{|pair| pair.split('=')} ]
-      response = Typhoeus.get("https://#{@host}/api/v1/#{type}?#{URI.encode_www_form(params)}", headers: headers)
+      uri = "https://#{@host}/api/v1/#{type}"
+      response = Typhoeus.get(uri, headers: headers, params: params)
       response.body
     end
 
@@ -30,19 +34,26 @@ module Klimt
       params = Hash[ params.map{|pair| pair.split('=')} ]
       params[:size] = 0
       params[:total_count] = true
-      response = Typhoeus.get("https://#{@host}/api/v1/#{type}?#{URI.encode_www_form(params)}", headers: headers)
+      uri = "https://#{@host}/api/v1/#{type}"
+      response = Typhoeus.get(uri, headers: headers, params: params)
       response.headers['X-Total-Count']
     end
 
-    def search(term, params, options)
+    def search(term, params, indexes=nil)
       params = Hash[ params.map{|pair| pair.split('=')} ]
       params[:term] = term
-      search_uri = "https://#{@host}/api/v1/match?#{URI.encode_www_form(params)}"
-      if options[:indexes]
-      # this is weird cuz same key can exist multiple times
-        search_uri << "&" << options[:indexes].map{|index| "indexes[]=#{index}"}.join('&')
-      end
-      response = Typhoeus.get(search_uri, headers: headers)
+      params[:indexes] = indexes unless indexes.nil?
+      uri = "https://#{@host}/api/v1/match"
+      response = Typhoeus.get(uri, headers: headers, params: params, params_encoding: :rack) # encode arrays correctly
+      response.body
+    end
+
+    # partners
+
+    def partner_locations(partner_id, params)
+      params = Hash[ params.map{|pair| pair.split('=')} ]
+      uri = "https://#{@host}/api/v1/partner/#{partner_id}/locations"
+      response = Typhoeus.get(uri, headers: headers, params: params)
       response.body
     end
 
