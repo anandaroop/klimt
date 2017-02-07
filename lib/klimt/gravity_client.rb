@@ -23,14 +23,14 @@ module Klimt
       response.body
     end
 
-    def list(type, params)
+    def list(type:, params: {})
       params = Hash[params.map { |pair| pair.split('=') }]
       uri = "https://#{@host}/api/v1/#{type}"
       response = Typhoeus.get(uri, headers: headers, params: params)
       response.body
     end
 
-    def count(type, params)
+    def count(type:, params: {})
       params = Hash[params.map { |pair| pair.split('=') }]
       params[:size] = 0
       params[:total_count] = true
@@ -39,7 +39,7 @@ module Klimt
       response.headers['X-Total-Count']
     end
 
-    def search(term, params, indexes = nil)
+    def search(term:, params: {}, indexes: nil)
       params = Hash[params.map { |pair| pair.split('=') }]
       params[:term] = term
       params[:indexes] = indexes unless indexes.nil?

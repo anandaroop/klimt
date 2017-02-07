@@ -18,23 +18,23 @@ module Klimt
     desc 'list TYPE [PARAMS]', 'A list of the given TYPE, optionally filted by PARAMS'
     def list(type, *params)
       client = Klimt::GravityClient.new(env: options[:env])
-      response = client.list(type, params)
+      response = client.list(type: type, params: params)
       render response
     end
 
     desc 'count TYPE [PARAMS]', 'A count of the given TYPE, optionally filted by PARAMS'
     def count(type, *params)
       client = Klimt::GravityClient.new(env: options[:env])
-      count = client.count(type, params)
+      count = client.count(type: type, params: params)
       puts count
     end
 
     desc 'search TERM', 'Search results for the given TERM, optionally filted by PARAMS'
-    method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...'
+    method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...', enum: %w(Article Artist Artist Artwork City Fair Feature Gene PartnerShow Profile Sale Tag)
     def search(term, *params)
       indexes = options[:indexes] unless options[:indexes].nil?
       client = Klimt::GravityClient.new(env: options[:env])
-      response = client.search(term, params, indexes)
+      response = client.search(term: term, params: params, indexes: indexes)
       render response
     end
 

@@ -7,8 +7,10 @@ AllCops:
 Metrics/LineLength:
   Max: 132 # good for desktop Github
 
-# Metrics/AbcSize:
-#   Max: 16
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
 
 Style/FrozenStringLiteralComment:
   Enabled: false
