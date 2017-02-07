@@ -30,7 +30,8 @@ module Klimt
     end
 
     desc 'search TERM', 'Search results for the given TERM, optionally filted by PARAMS'
-    method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...', enum: %w(Article Artist Artist Artwork City Fair Feature Gene PartnerShow Profile Sale Tag)
+    method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...',
+                            enum: %w(Article Artist Artist Artwork City Fair Feature Gene PartnerShow Profile Sale Tag)
     def search(term, *params)
       indexes = options[:indexes] unless options[:indexes].nil?
       client = Klimt::GravityClient.new(env: options[:env])

@@ -91,6 +91,7 @@ RSpec.describe Klimt::GravityClient do
           stub = WebMock.stub_request(:get, 'https://api.artsy.biz/api/v1/match')
                         .with(query: { term: 'shark', indexes: %w(Artwork Article) })
           client.search(term: 'shark', indexes: %w(Artwork Article))
+          expect(stub).to have_been_requested
         end
       end
     end
