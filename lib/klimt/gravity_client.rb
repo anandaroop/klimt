@@ -3,7 +3,6 @@ require 'netrc'
 require 'highline'
 require 'typhoeus'
 require 'json'
-require 'uri'
 
 module Klimt
   class GravityClient
