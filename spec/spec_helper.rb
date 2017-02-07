@@ -9,3 +9,9 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+def stub_netrc_authentication
+  creds = { 'api.artsy.biz' => ['somebody@artsymail.com', 'some-token-123'] }
+  stub_const("#{described_class.name}::HOSTS", { test: 'api.artsy.biz' })
+  allow(Netrc).to receive(:read).and_return(creds)
+end

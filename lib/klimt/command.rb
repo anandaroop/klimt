@@ -11,7 +11,7 @@ module Klimt
     desc "find TYPE ID", "An instance of the given TYPE, identified by ID"
     def find(type, id)
       client = Klimt::GravityClient.new(env: options[:env])
-      response = client.find(type, id)
+      response = client.find(type: type, id: id)
       render response
     end
 

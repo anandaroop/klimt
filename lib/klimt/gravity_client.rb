@@ -17,7 +17,7 @@ module Klimt
       @token = find_or_create_token
     end
 
-    def find(type, id)
+    def find(type:, id:)
       uri = "https://#{@host}/api/v1/#{type}/#{id}"
       response = Typhoeus.get(uri, headers: headers)
       response.body
@@ -61,7 +61,8 @@ module Klimt
 
     def headers
       {
-        'X-ACCESS-TOKEN': @token
+        'X-ACCESS-TOKEN' => @token,
+        'User-Agent' => "Klimt #{Klimt::VERSION}"
       }
     end
 
