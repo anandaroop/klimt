@@ -9,11 +9,11 @@ module Klimt
   class GravityClient
     attr_reader :token
 
-    HOSTS = { production: 'api.artsy.net', staging: 'stagingapi.artsy.net' }
+    HOSTS = { production: 'api.artsy.net', staging: 'stagingapi.artsy.net' }.freeze
     DEFAULT_PAGE_SIZE = 20
 
     def initialize(env:)
-      @host = set_host(env)
+      @host = host_from_environment(env)
       @token = find_or_create_token
     end
 
@@ -24,14 +24,14 @@ module Klimt
     end
 
     def list(type, params)
-      params = Hash[ params.map{|pair| pair.split('=')} ]
+      params = Hash[params.map { |pair| pair.split('=') }]
       uri = "https://#{@host}/api/v1/#{type}"
       response = Typhoeus.get(uri, headers: headers, params: params)
       response.body
     end
 
     def count(type, params)
-      params = Hash[ params.map{|pair| pair.split('=')} ]
+      params = Hash[params.map { |pair| pair.split('=') }]
       params[:size] = 0
       params[:total_count] = true
       uri = "https://#{@host}/api/v1/#{type}"
@@ -39,8 +39,8 @@ module Klimt
       response.headers['X-Total-Count']
     end
 
-    def search(term, params, indexes=nil)
-      params = Hash[ params.map{|pair| pair.split('=')} ]
+    def search(term, params, indexes = nil)
+      params = Hash[params.map { |pair| pair.split('=') }]
       params[:term] = term
       params[:indexes] = indexes unless indexes.nil?
       uri = "https://#{@host}/api/v1/match"
@@ -51,7 +51,7 @@ module Klimt
     # partners
 
     def partner_locations(partner_id, params)
-      params = Hash[ params.map{|pair| pair.split('=')} ]
+      params = Hash[params.map { |pair| pair.split('=') }]
       uri = "https://#{@host}/api/v1/partner/#{partner_id}/locations"
       response = Typhoeus.get(uri, headers: headers, params: params)
       response.body
@@ -66,45 +66,48 @@ module Klimt
       }
     end
 
-    def set_host(env)
+    def host_from_environment(env)
       HOSTS[env.to_sym]
     end
 
     def find_or_create_token
       _user, token = Netrc.read[@host]
-      token ||= generate_token
+      token || generate_token
     end
 
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def generate_token
-      email, pass = get_credentials
+      email, pass = ask_for_credentials
       params = {
         client_id: ENV['KLIMT_ID'],
         client_secret: ENV['KLIMT_SECRET'],
         grant_type: 'credentials',
         email: email,
-        password: pass        
+        password: pass
       }
       response = Typhoeus.get "https://#{@host}/oauth2/access_token", params: params
-      body = JSON.parse(response.body )
-      if response.success?
-        body['access_token'].tap do |new_token|
-          netrc = Netrc.read
-          netrc[@host] = email, new_token
-          netrc.save
-        end
-      else
-        puts "Login failed: #{body['error_description']}"
-        exit 1
+      body = JSON.parse(response.body)
+      quit "Login failed: #{body['error_description']}" unless response.success?
+      body['access_token'].tap do |new_token|
+        netrc = Netrc.read
+        netrc[@host] = email, new_token
+        netrc.save
       end
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-    def get_credentials
+    def quit(msg)
+      $stderr.puts msg
+      exit 1
+    end
+
+    def ask_for_credentials
       cli = HighLine.new
-      cli.say "No login credentials found in .netrc"
-      cli.say "Please login now"
-      cli.say "-----"
-      email = cli.ask("Artsy email    : ") { }
-      pass  = cli.ask("Artsy password : ") { |q| q.echo = "x" }
+      cli.say 'No login credentials found in .netrc'
+      cli.say 'Please login now'
+      cli.say '-----'
+      email = cli.ask('Artsy email    : ') {}
+      pass  = cli.ask('Artsy password : ') { |q| q.echo = 'x' }
       [email, pass]
     end
   end

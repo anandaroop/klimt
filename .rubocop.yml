@@ -1,0 +1,17 @@
+# inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - klimt.gemspec
+
+Metrics/LineLength:
+  Max: 132 # good for desktop Github
+
+# Metrics/AbcSize:
+#   Max: 16
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false

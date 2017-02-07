@@ -1,16 +1,16 @@
 require 'byebug'
-require "spec_helper"
+require 'spec_helper'
 require 'webmock/rspec'
 
 RSpec.describe Klimt::GravityClient do
-  describe "constructor" do
-    it "requires an env: argument" do
-      expect{ client = described_class.new }.to raise_error ArgumentError
+  describe 'constructor' do
+    it 'requires an env: argument' do
+      expect { described_class.new }.to raise_error ArgumentError
     end
   end
 
-  describe "instance methods" do
-    let(:client) { described_class.new(env: 'test') } 
+  describe 'instance methods' do
+    let(:client) { described_class.new(env: 'test') }
     before do
       stub_netrc_authentication
     end
@@ -29,5 +29,4 @@ RSpec.describe Klimt::GravityClient do
       end
     end
   end
-
 end
