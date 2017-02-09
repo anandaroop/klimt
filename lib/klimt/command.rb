@@ -6,6 +6,8 @@ module Klimt
   class Command < Thor
     include Rendering
 
+    map %w[--version -v] => 'version'
+
     class_option :env, desc: 'Choose environment', default: 'production', aliases: ['-e'], enum: %w(production staging)
 
     desc 'find TYPE ID', 'An instance of the given TYPE, identified by ID'
@@ -37,6 +39,11 @@ module Klimt
       client = Klimt::GravityClient.new(env: options[:env])
       response = client.search(term: term, params: params, indexes: indexes)
       render response
+    end
+
+    desc "version", "print the version"
+    def version
+      puts Klimt::VERSION
     end
 
     # partner subcommands
