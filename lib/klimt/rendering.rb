@@ -1,19 +1,17 @@
 module Rendering
-  def render(obj)
+  def render(obj, jq_options: nil, jq_filter: nil)
     if jq_installed?
-      render_with_jq(obj)
+      render_with_jq(obj, opts: jq_options, filter: jq_filter)
     else
       render_pretty(obj)
     end
   end
 
-  def render_with_jq(obj)
-    cmd = if options[:color]
-      "jq -C"
-    else
-      "jq"
-    end
-    IO.popen("#{cmd} '.'", 'r+') do |p|
+  def render_with_jq(obj, opts: '', filter: nil)
+    opts ||= ''
+    opts << ' -C' if options[:color]
+    filter ||= '.'
+    IO.popen("jq #{opts} \"#{filter}\"", 'r+') do |p|
       p.write obj
       p.close_write
       puts p.read
