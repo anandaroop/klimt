@@ -1,5 +1,6 @@
 require 'thor'
 require 'klimt/commands/partner'
+require 'klimt/commands/cities'
 require 'klimt/rendering'
 
 module Klimt
@@ -51,5 +52,10 @@ module Klimt
 
     desc 'partner', 'View subcommands that pertain to partners'
     subcommand 'partner', Klimt::Commands::Partner
+
+    # city subcommands
+
+    desc 'cities', 'View subcommands that pertain to cities'
+    subcommand 'cities', Klimt::Commands::Cities
   end
 end
