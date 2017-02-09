@@ -9,6 +9,7 @@ module Klimt
     map %w[--version -v] => 'version'
 
     class_option :env, desc: 'Choose environment', default: 'production', aliases: ['-e'], enum: %w(production staging)
+    class_option :color, desc: 'Colorize output (via jq)', default: false, aliases: ['-c'], type: :boolean
 
     desc 'find TYPE ID', 'An instance of the given TYPE, identified by ID'
     def find(type, id)
