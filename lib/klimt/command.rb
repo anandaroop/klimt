@@ -19,21 +19,21 @@ module Klimt
       render response
     end
 
-    desc 'list TYPE [PARAMS]', 'A list of the given TYPE, optionally filted by PARAMS'
+    desc 'list TYPE [PARAMS]', 'A list of the given TYPE, optionally filtered by PARAMS'
     def list(type, *params)
       client = Klimt::GravityClient.new(env: options[:env])
       response = client.list(type: type, params: params)
       render response
     end
 
-    desc 'count TYPE [PARAMS]', 'A count of the given TYPE, optionally filted by PARAMS'
+    desc 'count TYPE [PARAMS]', 'A count of the given TYPE, optionally filtered by PARAMS'
     def count(type, *params)
       client = Klimt::GravityClient.new(env: options[:env])
       count = client.count(type: type, params: params)
       puts count
     end
 
-    desc 'search TERM', 'Search results for the given TERM, optionally filted by PARAMS'
+    desc 'search TERM', 'Search results for the given TERM, optionally filtered by PARAMS'
     method_option :lucky, type: :boolean, desc: 'Feeling lucky? Just summarize the top hit', default: false
     method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...',
                             enum: %w(Article Artist Artist Artwork City Fair Feature Gene PartnerShow Profile Sale Tag)
