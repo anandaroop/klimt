@@ -40,4 +40,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'netrc', '~> 0.11'
   spec.add_runtime_dependency 'highline', '~> 1.7'
   spec.add_runtime_dependency 'typhoeus', '~> 1.1'
+  spec.add_runtime_dependency 'thor-zsh_completion', '~> 0.1'
 end

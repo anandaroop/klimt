@@ -86,8 +86,9 @@ Since it's not distributed via RubyGems, you'll fetch and build it yourself whic
 ```sh
 $ git clone https://github.com/anandaroop/klimt.git
 $ cd klimt
-$ gem build klimt
-$ gem install klimt
+# Set up your gravity keys
+$ gem build klimt.gemspec
+$ gem install klimt*.gem
 ```
 
 Klimt uses a Gravity `ClientApplication`, whose id and secret you'll have to supply in your environment as `KLIMT_ID` and `KLIMT_SECRET`.
@@ -98,3 +99,4 @@ $ KLIMT_ID=<replace> KLIMT_SECRET=<replace> klimt help
 
 Or just add these env variables to your shell startup script.
 
+If you'd like auto-completion in zsh, add `eval "$(klimt zsh-completion)"` to the end of your `.zshrc`.

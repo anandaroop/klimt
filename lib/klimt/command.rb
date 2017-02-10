@@ -1,4 +1,5 @@
 require 'thor'
+require "thor/zsh_completion"
 require 'klimt/commands/rendering'
 require 'klimt/commands/partner'
 require 'klimt/commands/city'
@@ -6,6 +7,7 @@ require 'klimt/commands/city'
 module Klimt
   class Command < Thor
     include Klimt::Commands::Rendering
+    include ZshCompletion::Command
 
     map %w(--version -v) => 'version'
 
