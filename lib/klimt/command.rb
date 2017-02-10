@@ -34,13 +34,19 @@ module Klimt
     end
 
     desc 'search TERM', 'Search results for the given TERM, optionally filted by PARAMS'
+    method_option :lucky, type: :boolean, desc: 'Feeling lucky? Just summarize the top hit', default: false
     method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...',
                             enum: %w(Article Artist Artist Artwork City Fair Feature Gene PartnerShow Profile Sale Tag)
     def search(term, *params)
+      if options[:lucky]
+        params << 'size=1'
+        jq_filter = '.[0] | { model, id, display }'
+      end
       indexes = options[:indexes] unless options[:indexes].nil?
+
       client = Klimt::GravityClient.new(env: options[:env])
       response = client.search(term: term, params: params, indexes: indexes)
-      render response
+      render response, jq_filter: jq_filter
     end
 
     desc "version", "print the version"
