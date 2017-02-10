@@ -9,7 +9,7 @@ module Klimt
         end
       end
 
-      def render_with_jq(obj, opts: '', filter: nil)
+      def render_with_jq(obj, opts: nil, filter: nil)
         opts ||= ''
         opts << ' -C' if options[:color]
         filter ||= '.'
@@ -25,9 +25,8 @@ module Klimt
       end
 
       def jq_installed?
-        !%x{command -v jq}.empty?
+        !`command -v jq`.empty?
       end
     end
   end
 end
-

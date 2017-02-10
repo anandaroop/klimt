@@ -7,7 +7,7 @@ module Klimt
   class Command < Thor
     include Klimt::Commands::Rendering
 
-    map %w[--version -v] => 'version'
+    map %w(--version -v) => 'version'
 
     class_option :env, desc: 'Choose environment', default: 'production', aliases: ['-e'], enum: %w(production staging)
     class_option :color, desc: 'Colorize output (via jq)', default: false, aliases: ['-c'], type: :boolean
@@ -49,7 +49,7 @@ module Klimt
       render response, jq_filter: jq_filter
     end
 
-    desc "version", "print the version"
+    desc 'version', 'print the version'
     def version
       puts Klimt::VERSION
     end
