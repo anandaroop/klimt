@@ -55,6 +55,13 @@ module Klimt
       response.body
     end
 
+    def partner_locations_count(id:, params: [])
+      params = parse_params(params).merge(size: 0, total_count: true)
+      uri = "https://#{@host}/api/v1/partner/#{id}/locations"
+      response = Typhoeus.get(uri, headers: headers, params: params)
+      response.headers['X-Total-Count']
+    end
+
     def partner_near(params: [])
       params = parse_params(params)
       uri = "https://#{@host}/api/v1/partners"
