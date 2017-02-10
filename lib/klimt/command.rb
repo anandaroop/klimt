@@ -1,11 +1,11 @@
 require 'thor'
+require 'klimt/commands/rendering'
 require 'klimt/commands/partner'
-require 'klimt/commands/cities'
-require 'klimt/rendering'
+require 'klimt/commands/city'
 
 module Klimt
   class Command < Thor
-    include Rendering
+    include Klimt::Commands::Rendering
 
     map %w[--version -v] => 'version'
 
@@ -61,7 +61,7 @@ module Klimt
 
     # city subcommands
 
-    desc 'cities', 'View subcommands that pertain to cities'
-    subcommand 'cities', Klimt::Commands::Cities
+    desc 'city', 'View subcommands that pertain to cities'
+    subcommand 'city', Klimt::Commands::City
   end
 end

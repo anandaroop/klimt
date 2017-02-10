@@ -1,9 +1,6 @@
-require 'byebug'
-require 'klimt/rendering'
-
 module Klimt
   module Commands
-    class Cities < Thor
+    class City < Thor
       include Rendering
 
       desc 'list', 'List all currently geocoded cities from S3'

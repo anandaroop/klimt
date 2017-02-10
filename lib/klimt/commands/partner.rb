@@ -1,5 +1,3 @@
-require 'klimt/rendering'
-
 module Klimt
   module Commands
     class Partner < Thor
