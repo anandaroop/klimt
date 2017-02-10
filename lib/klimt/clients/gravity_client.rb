@@ -1,4 +1,3 @@
-# require 'byebug'
 require 'netrc'
 require 'highline'
 require 'typhoeus'
@@ -22,15 +21,15 @@ module Klimt
       response.body
     end
 
-    def list(type:, params: {})
-      params = Hash[params.map { |pair| pair.split('=') }]
+    def list(type:, params: [])
+      params = parse_params(params)
       uri = "https://#{@host}/api/v1/#{type}"
       response = Typhoeus.get(uri, headers: headers, params: params)
       response.body
     end
 
-    def count(type:, params: {})
-      params = Hash[params.map { |pair| pair.split('=') }]
+    def count(type:, params: [])
+      params = parse_params(params)
       params[:size] = 0
       params[:total_count] = true
       uri = "https://#{@host}/api/v1/#{type}"
@@ -38,8 +37,8 @@ module Klimt
       response.headers['X-Total-Count']
     end
 
-    def search(term:, params: {}, indexes: nil)
-      params = Hash[params.map { |pair| pair.split('=') }]
+    def search(term:, params: [], indexes: nil)
+      params = parse_params(params)
       params[:term] = term
       params[:indexes] = indexes unless indexes.nil?
       uri = "https://#{@host}/api/v1/match"
@@ -49,14 +48,18 @@ module Klimt
 
     # partners
 
-    def partner_locations(partner_id, params)
-      params = Hash[params.map { |pair| pair.split('=') }]
-      uri = "https://#{@host}/api/v1/partner/#{partner_id}/locations"
+    def partner_locations(id:, params: [])
+      params = parse_params(params)
+      uri = "https://#{@host}/api/v1/partner/#{id}/locations"
       response = Typhoeus.get(uri, headers: headers, params: params)
       response.body
     end
 
     private
+
+    def parse_params(params)
+      Hash[params.map { |pair| pair.split('=') }]
+    end
 
     def headers
       {

@@ -14,21 +14,21 @@ module Klimt
 
     desc 'find TYPE ID', 'An instance of the given TYPE, identified by ID'
     def find(type, id)
-      client = Klimt::GravityClient.new(env: options[:env])
+      client = GravityClient.new(env: options[:env])
       response = client.find(type: type, id: id)
       render response
     end
 
     desc 'list TYPE [PARAMS]', 'A list of the given TYPE, optionally filtered by PARAMS'
     def list(type, *params)
-      client = Klimt::GravityClient.new(env: options[:env])
+      client = GravityClient.new(env: options[:env])
       response = client.list(type: type, params: params)
       render response
     end
 
     desc 'count TYPE [PARAMS]', 'A count of the given TYPE, optionally filtered by PARAMS'
     def count(type, *params)
-      client = Klimt::GravityClient.new(env: options[:env])
+      client = GravityClient.new(env: options[:env])
       count = client.count(type: type, params: params)
       puts count
     end
@@ -44,7 +44,7 @@ module Klimt
       end
       indexes = options[:indexes] unless options[:indexes].nil?
 
-      client = Klimt::GravityClient.new(env: options[:env])
+      client = GravityClient.new(env: options[:env])
       response = client.search(term: term, params: params, indexes: indexes)
       render response, jq_filter: jq_filter
     end
