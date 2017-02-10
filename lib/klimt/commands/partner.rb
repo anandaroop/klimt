@@ -11,6 +11,19 @@ module Klimt
         response = client.partner_locations(id: partner_id, params: params)
         render response
       end
+
+      desc 'near', 'Partners near a lat/lng point'
+      method_option :y, type: :numeric, required: true, desc: 'Latitude'
+      method_option :x, type: :numeric, required: true, desc: 'Longitude'
+      method_option :eligible, type: :boolean, desc: 'Only where eligible_for_listing=true'
+      method_option :type, desc: 'Filter only institutions or galleries', banner: 'PartnerInstitution | PartnerGallery'
+      def near(*params)
+        params << "near=#{options[:y]},#{options[:x]}"
+        params << 'eligible_for_listing=true' if options[:eligible]
+        client = GravityClient.new(env: options[:env])
+        response = client.partner_near(params: params)
+        render response
+      end
     end
   end
 end

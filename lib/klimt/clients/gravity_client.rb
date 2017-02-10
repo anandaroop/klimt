@@ -55,6 +55,13 @@ module Klimt
       response.body
     end
 
+    def partner_near(params: [])
+      params = parse_params(params)
+      uri = "https://#{@host}/api/v1/partners"
+      response = Typhoeus.get(uri, headers: headers, params: params)
+      response.body
+    end
+
     private
 
     def parse_params(params)
