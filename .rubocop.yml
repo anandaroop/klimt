@@ -1,4 +1,4 @@
-# inherit_from: .rubocop_todo.yml
+inherit_from: .rubocop_todo.yml
 
 AllCops:
   Exclude:
@@ -17,3 +17,6 @@ Style/FrozenStringLiteralComment:
 
 Style/Documentation:
   Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent

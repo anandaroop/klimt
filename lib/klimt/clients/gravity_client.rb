@@ -91,7 +91,6 @@ module Klimt
       token || generate_token
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def generate_token
       email, pass = ask_for_credentials
       params = {
@@ -110,7 +109,6 @@ module Klimt
         netrc.save
       end
     end
-    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     def quit(msg)
       $stderr.puts msg

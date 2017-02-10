@@ -1,3 +1,5 @@
+require 'klimt/util/calculations'
+
 module Klimt
   module Commands
     class Partner < Thor
@@ -32,7 +34,6 @@ module Klimt
       desc 'check-locations [PARTNER_ID]', "Check correctness of a partner's location settings"
       method_option :y, type: :numeric, desc: 'Optionally, check only near given point'
       method_option :x, type: :numeric, desc: 'Optionally, check only near given point'
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
       def check_locations(partner_id)
         coords = options.values_at :y, :x
         if coords.any? && !coords.all?
@@ -68,12 +69,12 @@ module Klimt
         near_count = published_locations_count(partner, point: point)
         if near_count.zero?
           puts "#{CROSS}  No publicly viewable locations within #{RADIUS} of #{point}"
+          report_distances(partner, point: point)
           exit 1
         else
           puts "#{CHECK}  #{near_count} publicly viewable locations within #{RADIUS} of #{point}"
         end
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
       private
 
@@ -112,6 +113,22 @@ module Klimt
         total_count = response.to_i
         published_count = published_locations_count(partner, point: point)
         (total_count - published_count)
+      end
+
+      def report_distances(partner, point:)
+        params = ['private=true', 'size=100']
+        client = GravityClient.new(env: options[:env])
+        response = client.partner_locations(id: partner['id'], params: params)
+        locations = JSON.parse(response)
+        target_y, target_x = point.split(',').map(&:to_f)
+        puts "   Partner location distances from #{target_y}, #{target_x}"
+        puts '   ---------------------------------------------------------------------------'
+        locations.each do |location|
+          name, city, pub = location.values_at 'name', 'city', 'publicly_viewable'
+          loc_y, loc_x = location['coordinates'].values_at('lat', 'lng')
+          dist = Calculations.spherical_distance([loc_y, loc_x], [target_y, target_x])
+          puts '   %20.20s | %15.15s | %4s | %7.1f km | (%+.4f, %+.4f)' % [name, city, (pub ? 'pub' : 'priv'), dist, loc_y, loc_x]
+        end
       end
     end
   end
