@@ -63,7 +63,7 @@ module Klimt
           puts "#{CHECK}  #{public_count} publicly viewable locations"
         end
 
-        return unless point.nil?
+        return if point.nil?
         # close enough to desired coords?
         near_count = published_locations_count(partner, point: point)
         if near_count.zero?
