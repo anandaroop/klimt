@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - klimt.gemspec
+    - vendor/**/*
 
 Metrics/LineLength:
   Max: 132 # good for desktop Github
