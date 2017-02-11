@@ -64,6 +64,7 @@ module Klimt
 
     def partner_near(params: [])
       params = parse_params(params)
+      raise ArgumentError, 'a "near=LNG,LAT" parameter is required' unless params.include? 'near'
       uri = "https://#{@host}/api/v1/partners"
       response = Typhoeus.get(uri, headers: headers, params: params)
       response.body
@@ -71,14 +72,21 @@ module Klimt
 
     private
 
+    # Turn this from the command line:
+    #   ["size=10", "page=2"]
+    # into this for Typhoeus:
+    #   {'size' => 10, 'page' => 2}
+    #
     def parse_params(params)
       Hash[params.map { |pair| pair.split('=') }]
     end
 
     def headers
       {
-        'X-ACCESS-TOKEN' => @token,
-        'User-Agent' => "Klimt #{Klimt::VERSION}"
+        'User-Agent' => "Klimt #{Klimt::VERSION}",
+        'Content-type' => 'application/json',
+        'Accept' => 'application/json',
+        'X-ACCESS-TOKEN' => @token
       }
     end
 

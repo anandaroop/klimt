@@ -10,8 +10,8 @@ RSpec.configure do |config|
   end
 end
 
-def stub_netrc_authentication
+def stub_netrc_gravity_authentication
   creds = { 'api.artsy.biz' => ['somebody@artsymail.com', 'some-token-123'] }
-  stub_const("#{described_class.name}::HOSTS", test: 'api.artsy.biz')
+  stub_const('Klimt::GravityClient::HOSTS', test: 'api.artsy.biz')
   allow(Netrc).to receive(:read).and_return(creds)
 end
