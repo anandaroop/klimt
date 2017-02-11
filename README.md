@@ -91,7 +91,7 @@ $ gem build klimt.gemspec
 $ gem install klimt*.gem
 ```
 
-Klimt uses a Gravity `ClientApplication`, whose id and secret you'll have to supply in your environment as `KLIMT_ID` and `KLIMT_SECRET`.
+Klimt uses a Gravity `ClientApplication`, whose id and secret you'll have to supply in your environment as `KLIMT_ID` and `KLIMT_SECRET`. (Available in 1Password)
 
 ```sh
 $ KLIMT_ID=<replace> KLIMT_SECRET=<replace> klimt help
