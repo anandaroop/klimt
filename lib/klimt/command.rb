@@ -1,5 +1,5 @@
 require 'thor'
-require "thor/zsh_completion"
+require 'thor/zsh_completion'
 require 'klimt/commands/rendering'
 require 'klimt/commands/partner'
 require 'klimt/commands/city'
