@@ -67,7 +67,7 @@ Klimt — like the Heroku CLI client — uses [Netrc](https://github.com/heroku
 
 ## Klimt :sparkling_heart: JQ
 
-[JQ](https://stedolan.github.io/jq/) is a command line JSON pretty-printing and transformation tool that works great with Klimt
+[JQ](https://stedolan.github.io/jq/) is a command line json pretty-printing and transformation tool that works great with Klimt
 
 ```sh
 $ klimt list partners | jq '.[] | { id, name }'
@@ -82,17 +82,14 @@ $ klimt find artist andy-warhol --color
 
 ## Installation
 
-Since it's not distributed via RubyGems, you'll fetch and build it yourself which is as simple as: 
+Klimt is available as a RubyGem, so installation is as simple as: 
 
 ```sh
-$ git clone https://github.com/anandaroop/klimt.git
-$ cd klimt
-# Set up your gravity keys
-$ gem build klimt.gemspec
-$ gem install klimt*.gem
+# Set up your gravity keys, then…
+$ gem install klimt
 ```
 
-Klimt uses a Gravity `ClientApplication`, whose id and secret you'll have to supply in your environment as `KLIMT_ID` and `KLIMT_SECRET`. (Available in 1Password)
+Klimt uses a Gravity `ClientApplication`, whose id and secret you'll have to supply in your environment as `KLIMT_ID` and `KLIMT_SECRET`. (These are available in the shared 1Password vault — search for "Klimt env")
 
 ```sh
 $ KLIMT_ID=<replace> KLIMT_SECRET=<replace> klimt help
