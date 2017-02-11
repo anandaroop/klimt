@@ -1,4 +1,4 @@
-# Klimt
+# Klimt [![CircleCI](https://circleci.com/gh/anandaroop/klimt.svg?style=svg)](https://circleci.com/gh/anandaroop/klimt)
 
 Klimt is a **C**ommand **L**ine **I**nterface **M**etadata **T**ool. That almost spells Klimt. So close.
 
