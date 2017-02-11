@@ -52,7 +52,7 @@ See [the discussion](https://github.com/artsy/potential/blob/521d34796e2df87406c
 
 ### Custom subcommands
 
-If a resource can't be retrieved because it's not a root-level endoint, or if some further custom behavior is desired, it's easy enough to create a new subcommand to encapsulate these  requirements in a new subcommand, e.g. the [partner subcommand](https://github.com/anandaroop/klimt/blob/9ac2d3f341abe4d9f482d64b82a56e1248a8792b/lib/klimt/command.rb#L59-L60) or the [city subcommand](https://github.com/anandaroop/klimt/blob/9ac2d3f341abe4d9f482d64b82a56e1248a8792b/lib/klimt/command.rb#L64-L65).
+If a resource can't be retrieved because it's not a root-level endoint, or if some further custom behavior is desired, it's easy enough to create a new subcommand to encapsulate these  requirements, e.g. the [partner subcommand](https://github.com/anandaroop/klimt/blob/9ac2d3f341abe4d9f482d64b82a56e1248a8792b/lib/klimt/command.rb#L59-L60) or the [city subcommand](https://github.com/anandaroop/klimt/blob/9ac2d3f341abe4d9f482d64b82a56e1248a8792b/lib/klimt/command.rb#L64-L65).
 
 For example, this partner subcommand results in several fetches and a detailed report:
 
