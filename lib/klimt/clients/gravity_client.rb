@@ -18,7 +18,7 @@ module Klimt
     def find(type:, id:)
       uri = "https://#{@host}/api/v1/#{type}/#{id}"
       response = Typhoeus.get(uri, headers: headers)
-      fail response.body unless response.success?
+      raise response.body unless response.success?
       response.body
     end
 
@@ -26,7 +26,7 @@ module Klimt
       params = parse_params(params)
       uri = "https://#{@host}/api/v1/#{type}"
       response = Typhoeus.get(uri, headers: headers, params: params)
-      fail response.body unless response.success?
+      raise response.body unless response.success?
       response.body
     end
 
@@ -45,7 +45,7 @@ module Klimt
       params[:indexes] = indexes unless indexes.nil?
       uri = "https://#{@host}/api/v1/match"
       response = Typhoeus.get(uri, headers: headers, params: params, params_encoding: :rack) # encode arrays correctly
-      fail response.body unless response.success?
+      raise response.body unless response.success?
       response.body
     end
 
@@ -55,7 +55,7 @@ module Klimt
       params = parse_params(params)
       uri = "https://#{@host}/api/v1/partner/#{id}/locations"
       response = Typhoeus.get(uri, headers: headers, params: params)
-      fail response.body unless response.success?
+      raise response.body unless response.success?
       response.body
     end
 
@@ -71,7 +71,7 @@ module Klimt
       raise ArgumentError, 'a "near=LNG,LAT" parameter is required' unless params.include? 'near'
       uri = "https://#{@host}/api/v1/partners"
       response = Typhoeus.get(uri, headers: headers, params: params)
-      fail response.body unless response.success?
+      raise response.body unless response.success?
       response.body
     end
 
@@ -115,7 +115,7 @@ module Klimt
       }
       response = Typhoeus.get "https://#{@host}/oauth2/access_token", params: params
       body = JSON.parse(response.body)
-      quit "Login failed: #{body['error_description']}" unless response.success?
+      quit "Login raiseed: #{body['error_description']}" unless response.success?
       body['access_token'].tap do |new_token|
         netrc = Netrc.read
         netrc[@host] = email, new_token

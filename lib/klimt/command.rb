@@ -9,9 +9,9 @@ module Klimt
     include Klimt::Commands::Rendering
     include ZshCompletion::Command
 
-    map %w(--version -v) => 'version'
+    map %w[--version -v] => 'version'
 
-    class_option :env, desc: 'Choose environment', default: 'production', aliases: ['-e'], enum: %w(production staging)
+    class_option :env, desc: 'Choose environment', default: 'production', aliases: ['-e'], enum: %w[production staging]
     class_option :color, desc: 'Colorize output (via jq)', default: false, aliases: ['-c'], type: :boolean
 
     desc 'find TYPE ID', 'An instance of the given TYPE, identified by ID'
@@ -38,7 +38,7 @@ module Klimt
     desc 'search TERM', 'Search results for the given TERM, optionally filtered by PARAMS'
     method_option :lucky, type: :boolean, desc: 'Feeling lucky? Just summarize the top hit', default: false
     method_option :indexes, type: :array, desc: 'An array of indexes to search', banner: 'Profile Artist etc...',
-                            enum: %w(Article Artist Artist Artwork City Fair Feature Gene PartnerShow Profile Sale Tag)
+                            enum: %w[Article Artist Artist Artwork City Fair Feature Gene PartnerShow Profile Sale Tag]
     def search(term, *params)
       if options[:lucky]
         params << 'size=1'
