@@ -11,6 +11,14 @@ RSpec.describe Klimt::GravityClient do
 
   describe 'instance methods' do
     let(:client) { described_class.new(env: 'test') }
+    let(:upstream_error) do
+      {
+        body: '{:error=>"500 Everything is broken"}',
+        status: 500,
+        headers: { 'Content-Type' => 'application/json' }
+      }
+    end
+
     before do
       stub_netrc_gravity_authentication
     end
@@ -28,6 +36,12 @@ RSpec.describe Klimt::GravityClient do
           client.find(type: 'partner', id: 'eyebeam')
           expect(stub).to have_been_requested
         end
+        context 'with an error from upstream' do
+          it 'raises an error' do
+            stub = WebMock.stub_request(:get, 'https://api.artsy.biz/api/v1/partner/errorz').to_return(upstream_error)
+            expect { client.find(type: 'partner', id: 'errorz') }.to raise_error(RuntimeError)
+          end
+        end
       end
 
       describe '#list' do
@@ -44,6 +58,12 @@ RSpec.describe Klimt::GravityClient do
             stub = WebMock.stub_request(:get, 'https://api.artsy.biz/api/v1/partners?foo=bar')
             client.list(type: 'partners', params: ['foo=bar'])
             expect(stub).to have_been_requested
+          end
+        end
+        context 'with an error from upstream' do
+          it 'raises an error' do
+            stub = WebMock.stub_request(:get, 'https://api.artsy.biz/api/v1/errorzzz').to_return(upstream_error)
+            expect { client.list(type: 'errorzzz') }.to raise_error(RuntimeError)
           end
         end
       end
@@ -95,6 +115,12 @@ RSpec.describe Klimt::GravityClient do
             expect(stub).to have_been_requested
           end
         end
+        context 'with an error from upstream' do
+          it 'raises an error' do
+            stub = WebMock.stub_request(:get, 'https://api.artsy.biz/api/v1/match?term=errorzzz').to_return(upstream_error)
+            expect { client.search(term: 'errorzzz') }.to raise_error(RuntimeError)
+          end
+        end
       end
     end
 
@@ -113,6 +139,12 @@ RSpec.describe Klimt::GravityClient do
             stub = WebMock.stub_request(:get, 'https://api.artsy.biz/api/v1/partner/eyebeam/locations?foo=bar')
             client.partner_locations(id: 'eyebeam', params: ['foo=bar'])
             expect(stub).to have_been_requested
+          end
+        end
+        context 'with an error from upstream' do
+          it 'raises an error' do
+            stub = WebMock.stub_request(:get, 'https://api.artsy.biz/api/v1/partner/errorzzz/locations').to_return(upstream_error)
+            expect { client.partner_locations(id: 'errorzzz') }.to raise_error(RuntimeError)
           end
         end
       end
@@ -155,6 +187,13 @@ RSpec.describe Klimt::GravityClient do
                           .with(query: { near: '30,-90', foo: 'bar' })
             client.partner_near(params: ['foo=bar', 'near=30,-90'])
             expect(stub).to have_been_requested
+          end
+        end
+        context 'with an error from upstream' do
+          it 'raises an error' do
+            stub = WebMock.stub_request(:get, 'https://api.artsy.biz/api/v1/partners?near=30,-90').to_return(upstream_error)
+            params = ['near=30,-90']
+            expect { client.partner_near(params: params) }.to raise_error(RuntimeError)
           end
         end
       end
